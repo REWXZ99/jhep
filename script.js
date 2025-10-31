@@ -6,6 +6,13 @@ const statusDiv = document.getElementById("status");
 let counter = 0;
 let isRunning = false;
 
+// Fungsi buat generate deviceId (pengganti crypto.randomBytes)
+function generateDeviceId() {
+    const randomBytes = new Uint8Array(21);
+    window.crypto.getRandomValues(randomBytes);
+    return Array.from(randomBytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
 const sendMessage = async (username, message) => {
     while (isRunning) {
         try {
@@ -14,7 +21,7 @@ const sendMessage = async (username, message) => {
             const hours = String(date.getHours()).padStart(2, '0');
             const formattedDate = `${hours}:${minutes}`;
 
-            const deviceId = crypto.randomBytes(21).toString("hex");
+            const deviceId = generateDeviceId(); // Pake fungsi yang baru
             const url = "https://ngl.link/api/submit";
             const headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/109.0",
